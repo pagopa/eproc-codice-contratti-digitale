@@ -68,7 +68,7 @@ export default {
             let virtualTree = lodash.cloneDeep(contents);
             var filteredSections = {}
             for (const [key, value] of Object.entries(virtualTree.sections)) {
-                if (value.parent === this.$route.params.section || key == this.$route.params.section) {
+                if (value.parent === this.$route.params.section || key == this.$route.params.section || (value.parent && value.parent.includes(this.$route.params.section))) {
                     if (key == this.$route.params.section) {
                         value.parent = null
                     }

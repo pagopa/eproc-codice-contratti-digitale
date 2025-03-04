@@ -30,7 +30,7 @@
 					<b class="bg-warning px-2 ms-2 rounded mt-3 mt-md-none text-white d-flex d-md-inline">
 						<svg style="max-width: 20px; top:-4px; position:relative; fill:#ffffff"
 							class="icon align-top me-2">
-							<use href="/bootstrap-italia/dist/svg/sprites.svg#it-warning-circle"></use>
+							<use :href='this.$root.baseURL + "/bootstrap-italia/dist/svg/sprites.svg#it-warning-circle"'></use>
 						</svg>
 						Funzionalità Beta
 					</b>
@@ -64,7 +64,7 @@
 								<button type="button" @click="compare()"
 									:class="'my-auto btn btn-primary p-3 ms-4 shadow rounded-circle btn-lg ' + ((this.versioning.v1 !== '' && this.versioning.v2 !== '') ? '' : 'disabled')">
 									<svg class="icon icon icon-white">
-										<use href="/bootstrap-italia/dist/svg/sprites.svg#it-exchange-circle"></use>
+										<use :href='this.$root.baseURL + "/bootstrap-italia/dist/svg/sprites.svg#it-exchange-circle"'></use>
 									</svg>
 								</button>
 							</div>
@@ -81,13 +81,13 @@
 							<a class="dropdown-toggle text-break" type="button" @click="clearCompare"
 								aria-expanded="false">
 								<svg class="icon icon-primary">
-									<use href="/bootstrap-italia/dist/svg/sprites.svg#it-close"></use>
+									<use :href='this.$root.baseURL + "/bootstrap-italia/dist/svg/sprites.svg#it-close"'></use>
 								</svg>
 								<span>
 									{{ this.versioning.from }}
 								</span>
 								<svg class="icon icon-primary icon-sm">
-									<use href="/bootstrap-italia/dist/svg/sprites.svg#it-arrow-right"></use>
+									<use :href='this.$root.baseURL + "/bootstrap-italia/dist/svg/sprites.svg#it-arrow-right"'></use>
 								</svg>
 								<span>
 									{{ this.versioning.to }}
@@ -98,7 +98,7 @@
 							<a class="dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown"
 								aria-expanded="false">
 								<svg class="icon icon-primary fixed-icon">
-									<use href="/bootstrap-italia/dist/svg/sprites.svg#it-expand"></use>
+									<use :href='this.$root.baseURL + "/bootstrap-italia/dist/svg/sprites.svg#it-expand"'></use>
 								</svg>
 								<span style="white-space:pre-wrap" class="text-break">
 									{{ article.activeVersion.normative_reference }} valido dal {{
@@ -120,7 +120,7 @@
 					<a v-if="this.opinions.length > 0" class="dropdown-toggle" type="button" data-bs-toggle="dropdown"
 						aria-expanded="false">
 						<svg class="icon icon-primary">
-							<use href="/bootstrap-italia/dist/svg/sprites.svg#it-expand"></use>
+							<use :href='this.$root.baseURL + "/bootstrap-italia/dist/svg/sprites.svg#it-expand"'></use>
 						</svg>
 						Sono presenti pareri
 						<span class="badge bg-danger ms-2">{{ this.opinions.length }}</span>
@@ -412,7 +412,7 @@ export default {
 		},
 		markdownToHTML(string) {
 			const converter = new showdown.Converter({ tables: true });
-			let html = converter.makeHtml(string).replaceAll('<table>', '<table class="table">');
+			let html = converter.makeHtml(string).replaceAll('<table>', '<table class="table">').replaceAll('href="/','href="'+this.$root.baseURL+"/");
 			return html
 		},
 

@@ -50,7 +50,7 @@ export default {
         }
     },
     created() {
-        this.nodes = [{ "title": "Home", "route": "https://www.serviziocontrattipubblici.it/" }, {"title": "Codice dei Contratti Pubblici Digitalizzato", "route" : "/"}]
+        this.nodes = [{ "title": "Home", "route": "https://www.serviziocontrattipubblici.it/" }, {"title": "Codice dei Contratti Pubblici Digitalizzato", "route" : "/index.html"}]
         if (this.article != undefined) {
             this.nodes = this.nodes.concat(this.$root.contentTree.getChain(this.article))
         }

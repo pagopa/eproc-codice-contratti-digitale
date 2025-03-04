@@ -36,7 +36,8 @@ export default {
 	data() {
 		return {
 			contentTree: new ContentTree(lodash.cloneDeep(contents)),
-			dlgs: contents.dlgs
+			dlgs: contents.dlgs,
+            baseURL : process.env.VUE_APP_BASE_URL
 		}
 	},
 	methods: {

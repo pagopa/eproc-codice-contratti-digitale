@@ -17,8 +17,9 @@ import 'bootstrap-italia/dist/css/bootstrap-italia.min.css';
 import 'bootstrap-italia/dist/js/bootstrap-italia.bundle.min.js'
 import ContainerNode from './components/navigator/ContainerNode.vue';
 
-const routes = [{
-        path: "/",
+const routes = [
+    {
+        path: "/index.html",
         component: HomeView
     },
     {
@@ -40,7 +41,7 @@ const routes = [{
 ]
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory(process.env.VUE_APP_BASE_URL),
     routes,
     scrollBehavior(to, from, savedPosition) {
         return new Promise((resolve) => {

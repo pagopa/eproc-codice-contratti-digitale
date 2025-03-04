@@ -86,7 +86,7 @@ export class ArticleNode extends Node {
     }
 
     getVersionContent = async (version) => {
-        const url = `/${this.folder}/v${version}.md`
+        const url = `${process.env.VUE_APP_BASE_URL}/${this.folder}/v${version}.md`
         try {
             const response = await fetch(url);
             if (!response.ok) {
@@ -332,7 +332,7 @@ export class ContentTree {
 
 export async function loadOpinions(article) {
     try {
-        const response = await fetch(`/contents/quesiti.json`)
+        const response = await fetch(`${process.env.VUE_APP_BASE_URL}/contents/quesiti.json`)
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
