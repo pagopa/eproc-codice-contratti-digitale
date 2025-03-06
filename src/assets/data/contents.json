@@ -5942,7 +5942,14 @@
             "section": "attachment-2-18-title-3-part-1",
             "keywords": [],
             "folder": "contents/codice-contratti-pubblici/allII18/art17",
-            "versions": []
+            "versions": [
+                {
+                    "id": "1",
+                    "validity_start": "2023-04-01",
+                    "validity_end": null,
+                    "normative_reference": "D.lgs. 36/2023"
+                }
+            ]
         },
         "allegato-2.18-articolo-18": {
             "title": "Art. 18. Verifica dei progetti",

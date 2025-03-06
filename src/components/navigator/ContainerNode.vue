@@ -10,7 +10,7 @@
             </div>
             <h6 class="my-auto">{{ node.title }}</h6>
             <span v-if="node.type == 'section' && this.$route.fullPath.split('/').slice(0,3).join('/') != `/section/${node.id}`" class="ms-auto">
-                <RouterLink :to="`/section/${node.id}`">
+                <RouterLink :to="`/index.html?section=${node.id}`">
                     <svg class="icon" aria-hidden="true">
                         <use :href="this.$root.baseURL + '/bootstrap-italia/dist/svg/sprites.svg#it-external-link'"></use>
                     </svg>

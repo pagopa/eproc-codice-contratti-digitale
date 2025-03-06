@@ -113,8 +113,8 @@ export default {
 	},
 	mounted() {
 		this.clearSearch();
-        if (this.$route.params.version) {
-            var currentDlgs = contents["dlgs"].filter((d) => {return d.id == this.$route.params.version})
+        if (this.$root.version) {
+            var currentDlgs = contents["dlgs"].filter((d) => {return d.id == this.$root.version})
             if (currentDlgs.length == 1) {
                 currentDlgs = currentDlgs[0]
 				if (!currentDlgs.validity_end) {

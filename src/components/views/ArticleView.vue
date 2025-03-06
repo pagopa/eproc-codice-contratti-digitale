@@ -4,7 +4,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-12">
-						<BreadcrumbNode :article="this.article" :section="undefined" />
+						<BreadcrumbNode :article="this.localArticle" :section="undefined" />
 						<div class="it-hero-text-wrapper bg-dark pt-0 pb-0">
 							<h1>Dettaglio Articolo</h1>
 						</div>
@@ -16,13 +16,13 @@
 	<div class="container mt-5">
 		<div class="row">
 			<div class="col-12">
-				<h1>{{ article.title }}</h1>
+				<h1>{{ localArticle.activeVersion.title ?? localArticle.title }}</h1>
 
 				<label class="active" for="dateStandard"><b>Stai visualizzando l'articolo valido al:</b></label>
 				<input @change="changeDate($event)" class="form-control" type="date" id="dateStandard"
 					name="dateStandard">
 
-				<div class="mt-2" v-if="article.versions.length > 1">
+				<div class="mt-2" v-if="localArticle.versions.length > 1">
 					<a href="#" class="" @click="this.versioning.show = !this.versioning.show">
 						Confronta versioni
 					</a>
@@ -43,7 +43,7 @@
 										<select v-model="this.versioning.v1" name="dlgs" class="select mb-3">
 											<option value="">Seleziona...</option>
 											<option
-												v-for="version in this.article.versions.filter((x) => x.id != this.versioning.v2)"
+												v-for="version in this.localArticle.versions.filter((x) => x.id != this.versioning.v2)"
 												:value="version.id" :key="version.id">
 												{{ version.normative_reference }}
 											</option>
@@ -54,7 +54,7 @@
 										<select v-model="this.versioning.v2" name="dlgs" class="select mb-3">
 											<option value="">Seleziona...</option>
 											<option
-												v-for="version in this.article.versions.filter((x) => x.id != this.versioning.v1)"
+												v-for="version in this.localArticle.versions.filter((x) => x.id != this.versioning.v1)"
 												:value="version.id" :key="version.id">
 												{{ version.normative_reference }}
 											</option>
@@ -101,16 +101,16 @@
 									<use :href='this.$root.baseURL + "/bootstrap-italia/dist/svg/sprites.svg#it-expand"'></use>
 								</svg>
 								<span style="white-space:pre-wrap" class="text-break">
-									{{ article.activeVersion.normative_reference }} valido dal {{
-							this.defaultDateFormatter.format(article.activeVersion.validity_start) }} {{
-							!isToday(article.activeVersion.validity_end) ? "al " +
-								this.defaultDateFormatter.format(article.activeVersion.validity_end) : '' }}
+									{{ localArticle.activeVersion.normative_reference }} valido dal {{
+							this.defaultDateFormatter.format(localArticle.activeVersion.validity_start) }} {{
+							!isToday(localArticle.activeVersion.validity_end) ? "al " +
+								this.defaultDateFormatter.format(localArticle.activeVersion.validity_end) : '' }}
 								</span>
 							</a>
 							<ul class="dropdown-menu">
-								<li v-for="version in article.versions" :key="version.id">
+								<li v-for="version in localArticle.versions" :key="version.id">
 									<button class="dropdown-item text-primary" @click="this.setArticleVersion(version)"
-										:class="version.id == article.activeVersion.id ? 'text-muted disabled' : ''">Versione
+										:class="version.id == localArticle.activeVersion.id ? 'text-muted disabled' : ''">Versione
 										{{ version.normative_reference }}</button>
 								</li>
 							</ul>
@@ -193,6 +193,7 @@ import OpinionCard from '../partials/OpinionCard.vue'
 import { createTwoFilesPatch, diffWords } from "diff";
 import "diff2html/bundles/css/diff2html.min.css";
 import { nextTick } from 'vue';
+import { ref } from 'vue';
 
 export default {
 	name: "ArticleView",
@@ -200,9 +201,13 @@ export default {
 		BreadcrumbNode,
 		OpinionCard
 	},
+	props: {
+		article: String,
+		section: String,
+		version: String
+	},
 	data() {
 		return {
-			article: null,
 			content: null,
 			dateFilter: "",
 			defaultDateFormatter: new Intl.DateTimeFormat('it-IT', {
@@ -224,18 +229,26 @@ export default {
 				from: "",
 				to: "",
 				listCounter: 0
+			},
+			localVersion: 0,
+			localArticle: {
+				versions: [],
+				activeVersion: 0
 			}
 		}
 	},
 	methods: {
+		mounted() {
+			console.log("here");
+		},
 		async compare() {
 			if (this.versioning.v1 !== '' && this.versioning.v2 !== '') {
 
-				var v1_content = (await this.article.getVersionContent(this.versioning.v1)).replaceAll(/<[^>]*>?/gm, '').replaceAll(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-				var v2_content = (await this.article.getVersionContent(this.versioning.v2)).replaceAll(/<[^>]*>?/gm, '').replaceAll(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+				var v1_content = (await this.localArticle.getVersionContent(this.versioning.v1)).replaceAll(/<[^>]*>?/gm, '').replaceAll(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+				var v2_content = (await this.localArticle.getVersionContent(this.versioning.v2)).replaceAll(/<[^>]*>?/gm, '').replaceAll(/\[([^\]]+)\]\([^)]+\)/g, '$1')
 
-				var from = this.article.versions.filter((x) => x.id == this.versioning.v1)[0].normative_reference
-				var to = this.article.versions.filter((x) => x.id == this.versioning.v2)[0].normative_reference
+				var from = this.localArticle.versions.filter((x) => x.id == this.versioning.v1)[0].normative_reference
+				var to = this.localArticle.versions.filter((x) => x.id == this.versioning.v2)[0].normative_reference
 
 				v1_content = this.markdownToHTML(v1_content)
 				v1_content = this.convertOrderedListToStaticList(v1_content);
@@ -378,8 +391,8 @@ export default {
 					}
 				}
 
-				this.versioning.diff = diffRes.replaceAll(/\b(?<!lettera\s+|lettere\s+|ed |[,] |e |\()([a-zA-Z](-bis|-ter|-quater|-quinquies)?\).*?)<br>/g, '<div class="ms-2 mt-1">$1</div> ').replaceAll("\\ No newline at end of file", '').replaceAll(" No newline at end of file", "") + diffAppend;
-				this.versioning.diff = this.versioning.diff.replaceAll(/(:|;)\b(?<!lettera\s+|lettere\s+|ed |[,] |e |\()([a-zA-Z](-bis|-ter|-quater|-quinquies)?\).*?)/g, '$1<br>$2').replaceAll('undefined', '')
+				this.versioning.diff = diffRes.replaceAll(/\b(?<!lettera\s+|lettere\s+|ed |[,] |e |\(|comma )([a-zA-Z](-bis|-ter|-quater|-quinquies)?\).*?)<br>/g, '<div class="ms-2 mt-1">$1</div> ').replaceAll("\\ No newline at end of file", '').replaceAll(" No newline at end of file", "") + diffAppend;
+				this.versioning.diff = this.versioning.diff.replaceAll(/(:|;)\b(?<!lettera\s+|lettere\s+|ed |[,] |e |\(|comma )([a-zA-Z](-bis|-ter|-quater|-quinquies)?\).*?)/g, '$1<br>$2').replaceAll('undefined', '')
 			}
 		},
 		highlighDifferences(str1, str2) {
@@ -460,13 +473,13 @@ export default {
 			if (searchingDate > new Date()) {
 				searchingDate = new Date()
 			}
-			let version = this.article.findVersionByDate(searchingDate)
+			let version = this.localArticle.findVersionByDate(searchingDate)
 			if (version) {
 				this.setArticleVersion(version, false)
 			}
 		},
 		updateDateFilter() {
-			this.dateFilter = this.calendarDateFormatter.format(this.article.activeVersion.validity_end)
+			this.dateFilter = this.calendarDateFormatter.format(this.localArticle.activeVersion.validity_end)
 		},
 		isToday(date) {
 			const today = new Date();
@@ -476,21 +489,21 @@ export default {
 				date.getDate() === today.getDate();
 		},
 		async setArticleVersion(version, updateDate = true) {
-			this.article.activeVersion = version
-			await this.article.loadVersion(version.id)
+			this.localArticle.activeVersion = version
+			await this.localArticle.loadVersion(version.id)
 
-			let content = this.markdownToHTML(this.article.markdown)
+			let content = this.markdownToHTML(this.localArticle.markdown)
 			content = this.convertOrderedListToStaticList(content)
 				.replaceAll('<p>', '<span>')
 				.replaceAll('</p>', '<br><br></span>')
 				// eslint-disable-next-line
-				.replaceAll(/\b(?<!lettera |lettere |punto |punti |peso |ed |[,] |e |\(|numero |numeri |del |\=|\- |\+ |\,)(([a-zA-Z]{1,2}|\d+(.\d+)?)(-bis|-ter|-quater|-quinquies|-sexies|-septies)?\).*?)(<br>|$)/gm, '<div class="ms-2 mt-1">$1</div> ')
+				.replaceAll(/\b(?<!lettera |lettere |punto |punti |peso |ed |[,] |e |\(|numero |numeri |del |\=|\- |\+ |\,|\/|\-|comma |n\. )(([a-zA-Z]{1,2}|\d+(.\d+)?)(-bis|-ter|-quater|-quinquies|-sexies|-septies)?\).*?)(<br>|$)/gm, '<div class="ms-2 mt-1">$1</div> ')
 				.replaceAll(/(<div class="ms-2 mt-1">(\d(\.\d)?\).*?)<\/div>)/gm, '<div class="ms-2">$1</div> ');
 
 			this.content = content;
 
 			//carica i pareri
-			this.opinions = await loadOpinions(this.article)
+			this.opinions = await loadOpinions(this.localArticle)
 			this.opinions.sort((a, b) => {
 				return a.emission_date < b.emission_date;
 			})
@@ -501,13 +514,13 @@ export default {
 	},
 	async created() {
 		//carica l'articolo
-		let art = contents.contents[this.$route.params.article]
-		this.article = new ArticleNode(this.$route.params.article, art.title, art.type, art)
+		let art = contents.contents[this.article]
+		this.localArticle = new ArticleNode(this.article, art.title, art.type, art)
 
 		//imposta la versione 
 		let version = undefined;
-		if (this.$route.params.version) { //se è impostata una versione nell'argomento della rotta estrapola
-			let currentversionsion = this.article.versions.filter((v) => { return v.id == this.$route.params.version })
+		if (this.$root.version) { //se è impostata una versione nell'argomento della rotta estrapola
+			let currentversionsion = this.localArticle.versions.filter((v) => { return v.id == this.$root.version })
 			if (currentversionsion.length > 0) {
 				version = currentversionsion[0]
 			}
@@ -515,7 +528,7 @@ export default {
 		}
 		//altrimenti imposta la versione attualmente attiva
 		if (version === undefined) {
-			version = this.article.findCurrentVersion();
+			version = this.localArticle.findCurrentVersion();
 		}
 
 		this.setArticleVersion(version)

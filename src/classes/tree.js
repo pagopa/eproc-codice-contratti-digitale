@@ -271,7 +271,7 @@ export class ContentTree {
             for (const [key, val] of Object.entries(_parent)) {
                 if (val === _node) {
                     _node.id = key
-                    _node.route = `/section/${_node.id}`
+                    _node.route = `index.html?section=${_node.id}`
                 }
             }
         }

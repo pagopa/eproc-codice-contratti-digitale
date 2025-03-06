@@ -4,7 +4,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <BreadcrumbNode :article="undefined" :section="this.section" />
+                        <BreadcrumbNode :article="undefined" :section="this.localSection" />
                         <HeroCard/>
                     </div>
                 </div>
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 
 import lodash from 'lodash'
 import contents from '@/assets/data/contents.json'
@@ -49,15 +50,19 @@ export default {
         ContainerNode,
         HeroCard
     },
+    props: {
+        section: String
+    },
     data() {
         return {
             contentTree: undefined,
-            section: undefined
+            localSection: undefined
         }
     },
     async created() {
+        this.localSection = ref(this.section)
         this.loadTree()
-
+        
     },
     mounted() {
         this.contentTree.setUnfiltered()
@@ -68,8 +73,8 @@ export default {
             let virtualTree = lodash.cloneDeep(contents);
             var filteredSections = {}
             for (const [key, value] of Object.entries(virtualTree.sections)) {
-                if (value.parent === this.$route.params.section || key == this.$route.params.section || (value.parent && value.parent.includes(this.$route.params.section))) {
-                    if (key == this.$route.params.section) {
+                if (value.parent === this.localSection || key == this.localSection || (value.parent && value.parent.includes(this.localSection))) {
+                    if (key == this.localSection) {
                         value.parent = null
                     }
                     filteredSections[key] = value;
@@ -77,7 +82,7 @@ export default {
             }
             virtualTree.sections = filteredSections
             this.contentTree = new ContentTree(virtualTree)
-            this.section = this.$root.contentTree.getNodeById({ id: null, childrens: this.$root.contentTree.nodes }, this.$route.params.section)
+            this.localSection = this.$root.contentTree.getNodeById({ id: null, childrens: this.$root.contentTree.nodes }, this.localSection)
         },
         updateContentTree() { //notifica Vue dell'aggiornamento dei nodi del contentTree
             this.contentTree.nodes = [...this.contentTree.nodes];
