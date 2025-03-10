@@ -27,13 +27,6 @@
 						Confronta versioni
 					</a>
 					<br class="d-md-none pt-md-none">
-					<b class="bg-warning px-2 ms-2 rounded mt-3 mt-md-none text-white d-flex d-md-inline">
-						<svg style="max-width: 20px; top:-4px; position:relative; fill:#ffffff"
-							class="icon align-top me-2">
-							<use :href='this.$root.baseURL + "/bootstrap-italia/dist/svg/sprites.svg#it-warning-circle"'></use>
-						</svg>
-						Funzionalità Beta
-					</b>
 					<div>
 						<Transition>
 							<div v-if="this.versioning.show" class="d-flex">
@@ -70,10 +63,6 @@
 							</div>
 						</Transition>
 					</div>
-				</div>
-				<div v-if="this.versioning.diff" class="alert alert-warning" role="alert">
-					<h4 class="alert-heading">Attenzione!</h4>
-					<p>Il confronto tra versioni è una funzionalità rilasciata in versione Beta: si consiglia di verificare attentamente i risultati ottenuti.</p>
 				</div>
 				<div class="dropdown p-2 bg-white shadow-sm mt-4 rounded d-md-flex justify-content-between">
 					<div class="d-flex flex-row flex-grow-1 justify-content-between">
@@ -238,9 +227,6 @@ export default {
 		}
 	},
 	methods: {
-		mounted() {
-			console.log("here");
-		},
 		async compare() {
 			if (this.versioning.v1 !== '' && this.versioning.v2 !== '') {
 
@@ -497,7 +483,7 @@ export default {
 				.replaceAll('<p>', '<span>')
 				.replaceAll('</p>', '<br><br></span>')
 				// eslint-disable-next-line
-				.replaceAll(/\b(?<!lettera |lettere |punto |punti |peso |ed |[,] |e |\(|numero |numeri |del |\=|\- |\+ |\,|\/|\-|comma |n\. )(([a-zA-Z]{1,2}|\d+(.\d+)?)(-bis|-ter|-quater|-quinquies|-sexies|-septies)?\).*?)(<br>|$)/gm, '<div class="ms-2 mt-1">$1</div> ')
+				.replaceAll(/\b(?<!lettera |lettere |punto |punti |peso |ed |[,] |e |\(|numero |numeri |del |\=|\- |\+ |\,|\/|\-|comma |n\. |÷ )(([a-zA-Z]{1,2}|\d+(.\d+)?)(-bis|-ter|-quater|-quinquies|-sexies|-septies)?\).*?)(<br>|$)/gm, '<div class="ms-2 mt-1">$1</div> ')
 				.replaceAll(/(<div class="ms-2 mt-1">(\d(\.\d)?\).*?)<\/div>)/gm, '<div class="ms-2">$1</div> ');
 
 			this.content = content;
