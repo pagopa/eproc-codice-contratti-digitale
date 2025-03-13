@@ -8,7 +8,7 @@
 							<a class="navbar-brand" href="https://www.governo.it/it">
 								Governo Italiano
 								<svg class="icon" aria-hidden="true">
-									<use href="/bootstrap-italia/dist/svg/sprites.svg#it-external-link"></use>
+									<use :href='this.$root.baseURL + "/bootstrap-italia/dist/svg/sprites.svg#it-external-link"'></use>
 								</svg>
 							</a>
 							<a href="https://www.serviziocontrattipubblici.com/Home/contatti">
@@ -31,7 +31,7 @@
 				<button class="pointer border-0 bg-white" @click="this.openMenu = !this.openMenu">
 					<svg class="icon" aria-hidden="true">
 						<use
-							:href="`/bootstrap-italia/dist/svg/sprites.svg#` + (this.openMenu ? 'it-close-big' : 'it-burger')">
+							:href="this.$root.baseURL + `/bootstrap-italia/dist/svg/sprites.svg#` + (this.openMenu ? 'it-close-big' : 'it-burger')">
 						</use>
 					</svg>
 				</button>

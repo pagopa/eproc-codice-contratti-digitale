@@ -165,11 +165,11 @@
             "parent": "book4-part2"
         },
         "book4-part2-title3": {
-            "title": "TITOLO III - L'esecuzione delle concessioni",
+            "title": "Titolo III - L'esecuzione delle concessioni",
             "parent": "book4-part2"
         },
         "book4-part2-title4": {
-            "title": "TITOLO IV - La finanza di progetto",
+            "title": "Titolo IV - La finanza di progetto",
             "parent": "book4-part2"
         },
         "book4-part3": {
@@ -4413,7 +4413,7 @@
             ]
         },
         "articolo-225-bis": {
-            "title": "Art. 225-bis. (Disposizioni transitorie e di coordinamento)",
+            "title": "Art. 225-bis. (Ulteriori disposizioni transitorie)",
             "type": "article",
             "section": "book5-part3",
             "keywords": [],
@@ -4449,7 +4449,7 @@
             ]
         },
         "articolo-226-bis": {
-            "title": "Art. 226-bis. (Abrogazioni e disposizioni finali)",
+            "title": "Art. 226-bis. (Disposizioni di semplificazione normativa)",
             "type": "article",
             "section": "book5-part3",
             "keywords": [],
@@ -4545,7 +4545,7 @@
             ]
         },
         "allegato-2.20-articolo-1": {
-            "title": "Art. 1. Appalti e procedure nel settore difesa e sicurezza",
+            "title": "Art. 1. Contratti misti",
             "type": "article",
             "section": "attachment-2-20",
             "keywords": [],
@@ -5942,7 +5942,14 @@
             "section": "attachment-2-18-title-3-part-1",
             "keywords": [],
             "folder": "contents/codice-contratti-pubblici/allII18/art17",
-            "versions": []
+            "versions": [
+                {
+                    "id": "1",
+                    "validity_start": "2023-04-01",
+                    "validity_end": null,
+                    "normative_reference": "D.lgs. 36/2023"
+                }
+            ]
         },
         "allegato-2.18-articolo-18": {
             "title": "Art. 18. Verifica dei progetti",
@@ -9176,8 +9183,14 @@
                 {
                     "id": "1",
                     "validity_start": "2023-04-01",
-                    "validity_end": null,
+                    "validity_end": "2024-12-31",
                     "normative_reference": "D.lgs. 36/2023"
+                },
+                {
+                    "id": "2",
+                    "validity_start": "2025-01-01",
+                    "validity_end": null,
+                    "normative_reference": "D.lgs. 209/2024"
                 }
             ]
         },

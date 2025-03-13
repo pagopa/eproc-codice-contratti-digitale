@@ -26,7 +26,7 @@
 					<Transition>
 						<a v-if="this.searchInput != ''" class="cpointer" @click="clearSearch">
 							<svg class="icon icon-sm icon-primary">
-								<use href="/bootstrap-italia/dist/svg/sprites.svg#it-funnel"></use>
+								<use :href='this.$root.baseURL + "/bootstrap-italia/dist/svg/sprites.svg#it-funnel"'></use>
 							</svg>
 							Ripristina filtro contenuto
 						</a>
@@ -39,7 +39,7 @@
 					<Transition>
 						<a v-if="this.dateInput != ''" class="cpointer" @click="clearDate">
 							<svg class="icon icon-sm icon-primary">
-								<use href="/bootstrap-italia/dist/svg/sprites.svg#it-funnel"></use>
+								<use :href='this.$root.baseURL + "/bootstrap-italia/dist/svg/sprites.svg#it-funnel"'></use>
 							</svg>
 							Ripristina filtro per data
 						</a>
@@ -57,7 +57,7 @@
 					<Transition>
 						<a class="cpointer" v-if="this.dlgsInput != ''" @click="clearDlgs">
 							<svg class="icon icon-sm icon-primary">
-								<use href="/bootstrap-italia/dist/svg/sprites.svg#it-funnel"></use>
+								<use :href='this.$root.baseURL + "/bootstrap-italia/dist/svg/sprites.svg#it-funnel"'></use>
 							</svg>
 							Ripristina validità decreto
 						</a>
@@ -68,7 +68,7 @@
 				<button type="button" @click="search"
 					class="my-auto btn btn-primary p-3 ms-4 shadow rounded-circle btn-lg">
 					<svg class="icon icon icon-white">
-						<use href="/bootstrap-italia/dist/svg/sprites.svg#it-search"></use>
+						<use :href='this.$root.baseURL + "/bootstrap-italia/dist/svg/sprites.svg#it-search"'></use>
 					</svg>
 				</button>
 			</div>
@@ -112,8 +112,9 @@ export default {
 		}
 	},
 	mounted() {
-        if (this.$route.params.version) {
-            var currentDlgs = contents["dlgs"].filter((d) => {return d.id == this.$route.params.version})
+		this.clearSearch();
+        if (this.$root.version) {
+            var currentDlgs = contents["dlgs"].filter((d) => {return d.id == this.$root.version})
             if (currentDlgs.length == 1) {
                 currentDlgs = currentDlgs[0]
 				if (!currentDlgs.validity_end) {
@@ -167,5 +168,3 @@ export default {
 	}
 }
 </script>
-
-<style></style>

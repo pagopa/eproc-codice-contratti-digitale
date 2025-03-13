@@ -6,13 +6,13 @@
             </div>
             <div v-else>
                 <div v-if="this.contentTree && !this.contentTree.filtered">
-                    <ArticleNode v-if="node.versions.length > 0" :to="'/' + node.id + '/' + node.findCurrentVersion().id" :text="!node.findCurrentVersion().title ? node.title : node.findCurrentVersion().title"/>
+                    <ArticleNode v-if="node.versions.length > 0" :to="'/index.html?article=' + node.id + '&version=' + node.findCurrentVersion().id" :text="!node.findCurrentVersion().title ? node.title : node.findCurrentVersion().title"/>
                 </div>
                 <div v-else>
                     <div v-for="version in node.versions" :key="version.id + version.filtered">
                         <div v-if="'filtered' in version">
                             <div v-if="!version.filtered" class="d-flex">
-                                <ArticleNode :to="'/' + node.id + '/' + version.id" :text="`${!version.title ? node.title : version.title} ${version.normative_reference}`"/>
+                                <ArticleNode :to="'/index.html?article=' + node.id + '&version=' + version.id" :text="`${!version.title ? node.title : version.title} ${version.normative_reference}`"/>
                             </div>
                         </div>
                     </div>
